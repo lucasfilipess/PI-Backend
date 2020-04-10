@@ -1,30 +1,35 @@
 const express = require('express');
 const routes = express.Router();
 
-const CompaniesController = require('./controllers/CompaniesController');
-const DonorsController = require('./controllers/DonorsController');
 const DonationController = require('./controllers/DonationsController');
 const SessionController = require('./controllers/SessionController');
 const UsersController = require('./controllers/UsersController');
-const authMiddleware = require('./middlewares/auth');
+const auth = require('./middlewares/auth');
+const authEmail = require('./middlewares/authEmail');
 
-routes.get('/company', CompaniesController.index);
-// routes.post('/company', CompaniesController.create);
+const { celebrate } = require('celebrate');
 
-routes.get('/donor', DonorsController.index);
-// routes.post('/donor', DonorsController.create);
+const { loginSchema, registerSchema } = require('./middlewares/authUser');
+
+
 
 routes.get('/donation', DonationController.index);
-routes.post('/donation', authMiddleware, DonationController.create);
-routes.delete('/donation/:id', authMiddleware, DonationController.delete);
+routes.post('/donation', DonationController.create);
+routes.delete('/donation/:id', DonationController.delete);
 
 
-routes.post('/register', UsersController.create);
+routes.post('/register', celebrate({
+  body: registerSchema
+}), authEmail, UsersController.create);
+
 routes.get('/users', UsersController.index);
 
 
 
-routes.post('/login', SessionController.login);
+
+routes.post('/login', celebrate({
+  body: loginSchema
+}), SessionController.login);
 
 
 module.exports = routes;

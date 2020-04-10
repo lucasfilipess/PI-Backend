@@ -16,10 +16,7 @@ module.exports = {
           'users.name',
           'users.email',
           'users.whatsapp',
-          /* 'users.cep',
-           'users.address',
-           'users.neighborhood',
-           'users.uf'*/
+
         );
 
       const [count] = await connection('donations')

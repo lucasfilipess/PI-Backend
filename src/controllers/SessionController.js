@@ -9,7 +9,7 @@ module.exports = {
 
 
       const rows = await connection('users')
-        .select('password', 'id', 'type', 'name')
+        .select('password', 'id', 'name')
         .where('email', email)
         .first();
 
@@ -22,16 +22,12 @@ module.exports = {
 
         const token = GenerateToken({
           id: rows.id,
-          type: rows.type,
+          name: rows.name
         });
-
-        const id = rows.id;
-        const name = rows.name;
-        const type = rows.type;
 
         return response
           .status(200)
-          .json({ id, type, name, token });
+          .json({ token });
       } else {
         return response.status(404).json({ msg: 'bad credentials' });
       }

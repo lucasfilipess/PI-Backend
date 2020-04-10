@@ -1,8 +1,6 @@
 const connection = require('../database/connection');
 
 module.exports = {
-
-
   async index(request, response) {
     try {
       const companies = await connection('users')
@@ -26,35 +24,23 @@ module.exports = {
 
   async create(request, response) {
     try {
-      const { type, name, email, whatsapp, password, description, cep, city, address, neighborhood, uf } = request.body;
+      const { name, email, whatsapp, password, description, cep, city, address, neighborhood, uf } = request.body;
 
-      const verify = await connection('users')
-        .select('email')
-        .where('email', email)
-        .first()
-
-      if (!verify) {
-        await connection('users').insert({
-          type,
-          name,
-          email,
-          whatsapp,
-          password,
-          description,
-          cep,
-          city,
-          address,
-          neighborhood,
-          uf
-        })
-        return response
-          .status(201)
-          .json({ status: 'success', message: 'user created' });
-      } else {
-        return response
-          .status(401)
-          .json({ error: 'email already registered' });
-      }
+      await connection('users').insert({
+        name,
+        email,
+        whatsapp,
+        password,
+        description,
+        cep,
+        city,
+        address,
+        neighborhood,
+        uf
+      })
+      return response
+        .status(201)
+        .json({ status: 'success', message: 'user created' });
 
 
     } catch (error) {
@@ -63,4 +49,7 @@ module.exports = {
         .json({ error: 'internal server error' });
     }
   }
+
+
+
 };

@@ -13,7 +13,7 @@ SQLite
 
 ### Pacotes:
 
-nodemon: https://www.npmjs.com/package/nodemon, kenx: http://knexjs.org/#Installation, express: https://www.npmjs.com/package/express, cors: https://www.npmjs.com/package/cors, celebrate: https://www.npmjs.com/package/celebrate, jest: https://www.npmjs.com/package/jest, 
+nodemon: https://www.npmjs.com/package/nodemon  kenx: http://knexjs.org/#Installation  express: https://www.npmjs.com/package/express, cors: https://www.npmjs.com/package/cors  celebrate: https://www.npmjs.com/package/celebrate  jest: https://www.npmjs.com/package/jest 
 
 ### Requerimentos
 Node >= 12, npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm

@@ -2,7 +2,6 @@
 exports.up = function (knex) {
   return knex.schema.createTable('users', function (table) {
     table.increments('id').primary();
-    table.string('type').notNullable();//1 => company 2 => donor
     table.string('name').notNullable();
     table.string('email').notNullable();
     table.string('whatsapp').notNullable();
