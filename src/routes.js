@@ -11,27 +11,30 @@ const { celebrate } = require('celebrate');
 
 const { loginSchema, registerSchema } = require('./middlewares/authUser');
 
+routes.get('/donations', auth, DonationController.index);
+routes.get('/donations/mydonations', auth, DonationController.myDonation);
+routes.post('/donations', auth, DonationController.create);
+routes.delete('/donations/:id', auth, DonationController.delete);
 
+routes.get('/donation/address', auth, DonationController.getAddress);
 
-routes.get('/donation', DonationController.index);
-routes.post('/donation', DonationController.create);
-routes.delete('/donation/:id', DonationController.delete);
-
-
-routes.post('/register', celebrate({
-  body: registerSchema
-}), authEmail, UsersController.create);
+routes.post(
+  '/register',
+  celebrate({
+    body: registerSchema,
+  }),
+  authEmail,
+  UsersController.create
+);
 
 routes.get('/users', UsersController.index);
 
-
-
-
-routes.post('/login', celebrate({
-  body: loginSchema
-}), SessionController.login);
-
+routes.post(
+  '/login',
+  celebrate({
+    body: loginSchema,
+  }),
+  SessionController.login
+);
 
 module.exports = routes;
-
-

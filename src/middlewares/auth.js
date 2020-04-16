@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const authConfig = require('../config/authConfig');
 
 module.exports = (request, response, next) => {
-
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
@@ -17,10 +16,8 @@ module.exports = (request, response, next) => {
     request.id = decoded.id;
     request.name = decoded.name;
 
+    // console.log(request.id, request.name);
+
     return next();
   });
 };
-
-
-
-

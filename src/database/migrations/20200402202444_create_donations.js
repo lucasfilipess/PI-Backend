@@ -4,13 +4,14 @@ exports.up = function (knex) {
     table.increments('id').primary();
     table.string('title').notNullable();
     table.string('description').notNullable();
-    table.decimal('amount').notNullable();
     table.string('donor_id').notNullable();
     table.string('cep').notNullable();
     table.string('city').notNullable();
     table.string('address').notNullable();
     table.string('neighborhood').notNullable();
     table.string('uf', 2).notNullable();
+    table.string('whatsapp').notNullable();
+    table.string('email').notNullable();
     table
       .foreign('donor_id')
       .references('id')
