@@ -1,34 +1,8 @@
 const connection = require('../database/connection');
 
 module.exports = {
-  async myDonation(request, response) {
-    try {
-      const { page = 1 } = request.query;
-
-      const donations = await connection('donations')
-        // .join('users', 'users.id', '=', 'donations.donor_id')
-        .limit(5)
-        .offset((page - 1) * 5)
-        .select('donations.*')
-        .where('donor_id', request.id);
-
-      const [count] = await connection('donations').count();
-
-      response.header('X-Total-Count', count['count(*)']);
-
-      if (!donations.length) {
-        return response.status(404).json({ msg: 'not donations found' });
-      }
-
-      return response.json(donations);
-    } catch (error) {
-      return response.status(500).json({ error: 'internal server error' });
-    }
-  },
   async index(request, response) {
     try {
-      const { page = 1 } = request.query;
-
       const donations = await connection('donations').select('*');
 
       const [count] = await connection('donations').count();
