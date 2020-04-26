@@ -11,6 +11,8 @@ module.exports = {
     password: Joi.string().required().min(1),
     uf: Joi.string().required().length(2),
     whatsapp: Joi.string().required().min(10).max(11),
+    number: Joi.string().required(),
+    complement: Joi.string(),
   }),
 
   loginSchema: Joi.object().keys({

@@ -23,6 +23,7 @@ module.exports = {
       return response.status(500).json({ error: 'internal server error' });
     }
   },
+
   async profileData(request, response) {
     try {
       const donations = await connection('users')

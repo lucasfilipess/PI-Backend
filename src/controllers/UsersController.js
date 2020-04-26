@@ -27,6 +27,8 @@ module.exports = {
         address,
         neighborhood,
         uf,
+        number,
+        complement,
       } = request.body;
 
       await connection('users').insert({
@@ -39,6 +41,8 @@ module.exports = {
         address,
         neighborhood,
         uf,
+        number,
+        complement,
       });
       return response
         .status(201)

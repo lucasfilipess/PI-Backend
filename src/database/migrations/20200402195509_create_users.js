@@ -1,4 +1,3 @@
-
 exports.up = function (knex) {
   return knex.schema.createTable('users', function (table) {
     table.increments('id').primary();
@@ -11,8 +10,9 @@ exports.up = function (knex) {
     table.string('address').notNullable();
     table.string('neighborhood').notNullable();
     table.string('uf', 2).notNullable();
+    table.string('number').notNullable();
+    table.string('complement').notNullable();
   });
-
 };
 
 exports.down = function (knex) {
