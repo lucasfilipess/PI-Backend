@@ -5,6 +5,7 @@ const DonationController = require('./controllers/DonationsController');
 const SessionController = require('./controllers/SessionController');
 const UsersController = require('./controllers/UsersController');
 const ProfileController = require('./controllers/ProfileController');
+const HomeController = require('./controllers/HomeController');
 const auth = require('./middlewares/auth');
 const authEmail = require('./middlewares/authEmail');
 
@@ -20,6 +21,8 @@ routes.get('/donation/address', auth, DonationController.getAddress);
 
 routes.get('/profile/donations', auth, ProfileController.donations);
 routes.get('/profile', auth, ProfileController.profileData);
+
+routes.get('/home', HomeController.getDonations);
 
 routes.post(
   '/register',

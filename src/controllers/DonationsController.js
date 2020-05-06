@@ -46,22 +46,49 @@ module.exports = {
     try {
       const donor_id = request.id;
 
-      const [contact] = await connection('users')
-        .select('whatsapp', 'email')
+      const [auxData] = await connection('users')
+        .select(
+          'whatsapp',
+          'email',
+          'cep',
+          'city',
+          'address',
+          'neighborhood',
+          'uf',
+          'number',
+          'complement'
+        )
         .where('id', donor_id);
 
-      const whatsapp = contact.whatsapp;
-      const email = contact.email;
+      let whatsapp = auxData.whatsapp;
+      let email = auxData.email;
+      let title = request.body.title;
+      let description = request.body.title;
+      let cep = '';
+      let city = '';
+      let address = '';
+      let neighborhood = '';
+      let uf = '';
+      let number = '';
+      let complement = '';
 
-      const {
-        title,
-        description,
-        cep,
-        city,
-        address,
-        neighborhood,
-        uf,
-      } = request.body;
+      if (request.body.checked === 1) {
+        cep = auxData.cep;
+        city = auxData.city;
+        address = auxData.address;
+        neighborhood = auxData.neighborhood;
+        uf = auxData.uf;
+        number = auxData.number;
+        complement = auxData.complement;
+      } else {
+        cep = request.body.cep;
+        city = request.body.city;
+        address = request.body.address;
+        neighborhood = request.body.neighborhood;
+        uf = request.body.uf;
+        number = request.body.number;
+        complement = request.body.complement;
+      }
 
       await connection('donations').insert({
         title,
@@ -74,6 +101,8 @@ module.exports = {
         uf,
         whatsapp,
         email,
+        number,
+        complement,
       });
       return response
         .status(201)
