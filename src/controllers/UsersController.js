@@ -3,13 +3,29 @@ const connection = require('../database/connection');
 module.exports = {
   async index(request, response) {
     try {
-      const companies = await connection('users').select('*');
+      const users = await connection('users').select('*');
 
-      if (!companies.length) {
+      if (!users.length) {
         return response.status(404).json({ msg: 'not users found' });
       }
 
-      return response.json(companies);
+      return response.json(users);
+    } catch (error) {
+      return response.status(500).json({ error: 'internal server error' });
+    }
+  },
+
+  async getUser(request, response) {
+    try {
+      const user = await connection('users')
+        .where('id', request.id)
+        .select('*');
+
+      if (!user.length) {
+        return response.status(404).json({ msg: 'not user found' });
+      }
+
+      return response.json(user[0]);
     } catch (error) {
       return response.status(500).json({ error: 'internal server error' });
     }
@@ -49,6 +65,49 @@ module.exports = {
         .json({ status: 'success', message: 'user created' });
     } catch (error) {
       return response.status(500).json({ error: 'internal server error' });
+    }
+  },
+
+  async update(request, response) {
+    const id = request.id;
+    const {
+      address,
+      cep,
+      checkPassword,
+      complement,
+      city,
+      email,
+      name,
+      number,
+      neighborhood,
+      password,
+      uf,
+      whatsapp,
+    } = request.body;
+    try {
+      const user = await connection('users')
+        .select('*')
+        .where('id', id)
+        .update({
+          address,
+          cep,
+          checkPassword,
+          complement,
+          city,
+          email,
+          name,
+          number,
+          neighborhood,
+          password,
+          uf,
+          whatsapp,
+        });
+      return response.json(user);
+    } catch (error) {
+      response.json({
+        status: 'could not update instance in database',
+        error,
+      });
     }
   },
 };

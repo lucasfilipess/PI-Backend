@@ -17,8 +17,6 @@ module.exports = (request, response, next) => {
     request.id = decoded.id;
     request.name = decoded.name;
 
-    // console.log(request.id, request.name);
-
     return next();
   });
 };

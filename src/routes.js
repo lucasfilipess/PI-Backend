@@ -14,7 +14,9 @@ const { celebrate } = require('celebrate');
 const { loginSchema, registerSchema } = require('./middlewares/authUser');
 
 routes.get('/donations', auth, DonationController.index);
+routes.get('/donation/:id', auth, DonationController.getDonation);
 routes.post('/donations', auth, DonationController.create);
+routes.put('/donations', auth, DonationController.update);
 routes.delete('/donations/:id', auth, DonationController.delete);
 
 routes.get('/donation/address', auth, DonationController.getAddress);
@@ -33,7 +35,18 @@ routes.post(
   UsersController.create
 );
 
+routes.put(
+  '/register',
+  auth,
+  celebrate({
+    body: registerSchema,
+  }),
+  UsersController.update
+);
+
 routes.get('/users', UsersController.index);
+
+routes.get('/user', auth, UsersController.getUser);
 
 routes.post(
   '/login',

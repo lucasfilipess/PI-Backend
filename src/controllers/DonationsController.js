@@ -3,7 +3,9 @@ const connection = require('../database/connection');
 module.exports = {
   async index(request, response) {
     try {
-      const donations = await connection('donations').select('*');
+      const donations = await connection('donations')
+        .join('users', 'users.id', '=', 'donations.donor_id')
+        .select('donations.*', 'users.name');
 
       const [count] = await connection('donations').count();
 
@@ -18,29 +20,23 @@ module.exports = {
       return response.status(500).json({ error: 'internal server error' });
     }
   },
-  // async index(request, response) {
-  //   try {
-  //     const { page = 1 } = request.query;
+  async getDonation(request, response) {
+    try {
+      const id = request.params.id;
 
-  //     const donations = await connection('donations')
-  //       .join('users', 'users.id', '=', 'donations.donor_id')
-  //       .limit(5)
-  //       .offset((page - 1) * 5)
-  //       .select('donations.*');
+      const donations = await connection('donations')
+        .select('*')
+        .where('id', id);
 
-  //     const [count] = await connection('donations').count();
+      if (!donations.length) {
+        return response.status(404).json({ msg: 'not donations found' });
+      }
 
-  //     response.header('X-Total-Count', count['count(*)']);
-
-  //     if (!donations.length) {
-  //       return response.status(404).json({ msg: 'not donations found' });
-  //     }
-
-  //     return response.json(donations);
-  //   } catch (error) {
-  //     return response.status(500).json({ error: 'internal server error' });
-  //   }
-  // },
+      return response.json(donations);
+    } catch (error) {
+      return response.status(500).json({ error: 'internal server error' });
+    }
+  },
 
   async create(request, response) {
     try {
@@ -63,7 +59,7 @@ module.exports = {
       let whatsapp = auxData.whatsapp;
       let email = auxData.email;
       let title = request.body.title;
-      let description = request.body.title;
+      let description = request.body.description;
       let cep = '';
       let city = '';
       let address = '';
@@ -109,6 +105,49 @@ module.exports = {
         .json({ status: 'success', message: 'donation created' });
     } catch (error) {
       return response.status(500).json({ error: 'internal server error' });
+    }
+  },
+
+  async update(request, response) {
+    const {
+      id,
+      title,
+      description,
+      donor_id,
+      cep,
+      city,
+      address,
+      neighborhood,
+      uf,
+      whatsapp,
+      email,
+      number,
+      complement,
+    } = request.body;
+    try {
+      const donation = await connection('donations')
+        .select('*')
+        .where('id', id)
+        .update({
+          title,
+          description,
+          donor_id,
+          cep,
+          city,
+          address,
+          neighborhood,
+          uf,
+          whatsapp,
+          email,
+          number,
+          complement,
+        });
+      return response.json(donation);
+    } catch (error) {
+      response.json({
+        status: 'could not update instance in database',
+        error,
+      });
     }
   },
 
